@@ -46,7 +46,7 @@ async function run() {
             res.send(result);
         })
 
-        
+
         app.get("/myToy/:id", async (req, res) => {
             const email = req.params.id;
             const filter = { seller_email: email };
@@ -73,6 +73,22 @@ async function run() {
             const result = await toyCollection.updateOne(filter, updateToy);
             res.send(result);
         })
+
+        // --------------search-------------
+        
+        const indexKey = { name: 1 };
+        const indexOption = { name: "toyName" };
+        const result = await toyCollection.createIndex(indexKey, indexOption);
+
+        app.get("/search/:text", async (req, res) => {
+            const text = req.params.text;
+            const result = await toyCollection
+                .find({
+                    name: { $regex: text, $options: "i" },
+                })
+                .toArray();
+            res.send(result);
+        });
 
         app.delete('/toys/:id', async (req, res) => {
             const id = req.params.id;

@@ -75,7 +75,7 @@ async function run() {
         })
 
         // --------------search-------------
-        
+
         const indexKey = { name: 1 };
         const indexOption = { name: "toyName" };
         const result = await toyCollection.createIndex(indexKey, indexOption);
@@ -88,6 +88,16 @@ async function run() {
                 })
                 .toArray();
             res.send(result);
+        });
+
+        // ------------------Sort----------
+        app.get("/sort", async (req, res) => {
+            const result = await toyCollection
+                .find({ seller_email: req.query?.email })
+                .sort({ price: parseInt(req.query?.sort) })
+                .toArray();
+            res.send(result);
+
         });
 
         app.delete('/toys/:id', async (req, res) => {

@@ -108,6 +108,18 @@ async function run() {
 
         });
 
+        // ------------------- Sub_category--------------------
+
+        app.get("/subcategory/:id", async (req, res) => {
+            const category = req.params.id;
+            const filter = { sub_category: category };
+            const result = await toyCollection
+                .find(filter)
+                .limit(2)
+                .toArray();
+            res.send(result);
+        });
+
         app.delete('/toys/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };

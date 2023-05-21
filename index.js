@@ -91,7 +91,6 @@ async function run() {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
             const updatedToys = req.body;
-            // console.log(updatedToys);
             const updateToy = {
                 $set: {
                     ...updatedToys
@@ -102,10 +101,6 @@ async function run() {
         })
 
         // --------------search-------------
-
-        // const indexKey = { name: 1 };
-        // const indexOption = { name: "toyName" };
-        // const result = await toyCollection.createIndex(indexKey, indexOption);
 
         app.get("/search/:text", async (req, res) => {
             const text = req.params.text;

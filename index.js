@@ -27,8 +27,27 @@ async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         // await client.connect();
+        
 
         const toyCollection = client.db('ToyDB').collection('toys');
+        const galleryCollection = client.db('ToyDB').collection('gallery');
+        const shopCollection = client.db('ToyDB').collection('shop');
+
+
+        // ----------------------gallery-------------------
+        app.get('/gallery', async (req, res) => {
+            const cursor = galleryCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
+
+        // ----------------------shop-------------------
+        app.get('/shop', async (req, res) => {
+            const cursor = shopCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
 
         // -------------------Toys-----------------------
@@ -84,9 +103,9 @@ async function run() {
 
         // --------------search-------------
 
-        const indexKey = { name: 1 };
-        const indexOption = { name: "toyName" };
-        const result = await toyCollection.createIndex(indexKey, indexOption);
+        // const indexKey = { name: 1 };
+        // const indexOption = { name: "toyName" };
+        // const result = await toyCollection.createIndex(indexKey, indexOption);
 
         app.get("/search/:text", async (req, res) => {
             const text = req.params.text;
@@ -110,7 +129,7 @@ async function run() {
 
         // ------------------- Sub_category--------------------
 
-        app.get("/subcategory/:id", async (req, res) => {
+        app.get("/sub/:id", async (req, res) => {
             const category = req.params.id;
             const filter = { sub_category: category };
             const result = await toyCollection
